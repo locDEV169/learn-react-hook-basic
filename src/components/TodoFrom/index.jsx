@@ -25,8 +25,10 @@ function TodoForm(props) {
         if (!onSubmit) return;
         // nếu có onSubmit thì truyền lại cho form Submit
         const formValues = {
+            //add vào giá trị của title là value
             title: value,
         };
+        //khi Submit thì gọi lại form value để ra truyền dữ liệu
         onSubmit(formValues);
 
         // Reset form

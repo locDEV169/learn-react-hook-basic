@@ -6,6 +6,7 @@ import TodoForm from './components/TodoFrom';
 import PostList from './components/PostList';
 import Pagination from './components/Pagination';
 import queryString from 'query-string';
+import PostFiltersForm from './components/PostFiltersForm';
 
 function App() {
   const [todoList, setTodoList] = useState([
@@ -25,6 +26,9 @@ function App() {
   const [filters, setFilters] = useState({
     _limit: 10,
     _page: 1,
+    //tạo 1 filter mới cho search
+    //title_like là tên trả về đúng như back end quy định 
+    title_like: '',
   })
 
   //sử dụng hook useEffect()
@@ -76,7 +80,7 @@ function App() {
     setTodoList(newTodoList)
   }
 
-
+  //add item vào TodoList
   function handleTodoSubmit(formValues) {
     console.log("Form Values", formValues)
     //add new todo to current todoList
@@ -89,6 +93,7 @@ function App() {
     setTodoList(newTodoList)
   }
 
+  //handle change page 
   function handlePageChange(newPage) {
     console.log("newPage ", newPage)
     setFilters({
@@ -98,14 +103,31 @@ function App() {
       _page: newPage,
     })
   }
+
+  //handle change 
+  function handleFiltersChange(newFilters){
+    console.log("newFilters", newFilters)
+    setFilters({
+      ...filters,
+      //reset về lại trang 1
+      //search kết quả ra nhìu trang nên chỉ để 1 trang
+      _page: 1,
+      //trả lại giá trị của searchTerm
+      title_like: newFilters.searchTerm,
+    })
+  }
+
+  //render app
   return (
     <div className="App">
       <h1>Welcome to React Hook</h1>
       <ColorBox />
+      <p>-----------------------------------------</p>
       <h2>React Hook useState lab2 -TodoList</h2>
       <TodoList todos={todoList} onTodoClick={handleTodoClick} />
       <h2>React Hook useState lab3 -TodoForm</h2>
       <TodoForm onSubmit={handleTodoSubmit} />
+      <p>-----------------------------------------</p>
       <h2>React Hook useEffect lab1 - PostList Api</h2>
       <PostList posts={postList} />
       <h2>React Hook useEffect lab2 - PostList Api + Pagination(phân trang)</h2>
@@ -113,6 +135,11 @@ function App() {
         pagination={pagination}
         onPageChange={handlePageChange}
       />
+      <h2>React Hook useEffect lab3 - PostList Api + Search Term() + kỹ thuật debounce</h2>
+      <PostFiltersForm 
+        onSubmit={handleFiltersChange}
+      />
+      <p>-----------------------------------------</p>
     </div>
   );
 }
