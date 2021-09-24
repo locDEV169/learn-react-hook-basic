@@ -7,6 +7,7 @@ import PostList from './components/PostList';
 import Pagination from './components/Pagination';
 import queryString from 'query-string';
 import PostFiltersForm from './components/PostFiltersForm';
+import Clock from './components/Clock';
 
 function App() {
   const [todoList, setTodoList] = useState([
@@ -117,6 +118,9 @@ function App() {
     })
   }
 
+  //set useState cho show Clock = true
+  const [showClock, setShowClock] = useState(true);
+
   //render app
   return (
     <div className="App">
@@ -139,6 +143,13 @@ function App() {
       <PostFiltersForm 
         onSubmit={handleFiltersChange}
       />
+      <h2>React Hook useEffect lab4 - useEffect cleanup với code Clock </h2>
+      {/*
+       là chưa ri sẽ báo lỗi Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
+       */}
+      {/* nên t phải cleanup lại setInterval bên component Con  */}
+      {showClock && <Clock />}
+      <button onClick={() => setShowClock(false)}>Hide clock</button>
       <p>-----------------------------------------</p>
     </div>
   );
